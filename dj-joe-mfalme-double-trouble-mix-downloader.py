@@ -22,7 +22,11 @@ mixes_page_url = "http://www.deejayjoemfalme.com/index.php/mixes"
 
 
 def download_mix(url, filename):
-    default_download_location = os.getenv('HOME') + '/Music'
+    home = os.getenv('HOME')
+    if not os.path.exists(home + '/Music/The Double Trouble Mixxtapes'):
+        os.mkdir(home + '/Music/The Double Trouble Mixxtapes')
+
+    default_download_location = home + '/Music/The Double Trouble Mixxtapes'
     print('\n[*] Downloading ' + filename + ' to ' + default_download_location + '\n')
     filename = default_download_location + '/' + filename
 
