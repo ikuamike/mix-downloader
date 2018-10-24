@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
 ##############################
+#
 # Author: Michael Ikua
 # Github: ikuamike
+#
 # ############################
-
 
 
 # ========== Imports ==========
@@ -35,13 +37,12 @@ def download_mix(url, filename):
         total_length = response.headers.get('content-length')
         dl = 0
         total_length = int(total_length)
-        for data in response.iter_content(chunk_size=4096):
+        for data in response.iter_content(chunk_size=1024):
             dl += len(data)
             f.write(data)
             done = int(50 * dl / total_length)
             sys.stdout.write('\t\r[{}{}]'.format('█' * done, '.' * (50-done)))
             sys.stdout.flush()
-    print('\n\n[*] Done!')
 
 
 def extract_urls(html, search_phrase):
@@ -84,9 +85,16 @@ def list_urls():
 
 def main():
     filenames = list_urls()
-    download_choice = int(input("\nWhich mix would you like to Download?\n> ")) - 1
+    print("\nUse 'all' to download all mixes.")
+    download_choice = input("\nWhich mix would you like to Download?\n> ")
     mixes = collect_urls()
-    download_mix(mixes[download_choice], filenames[download_choice])
+    if download_choice == 'all':
+        for mix, filename in zip(mixes, filenames):
+            download_mix(mix, filename)
+    else:
+        download_choice = int(download_choice) - 1
+        download_mix(mixes[download_choice], filenames[download_choice])
+    print('\n\n[*] Done!')
     # pprint.pprint(collect_urls())
 
 
